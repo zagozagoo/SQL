@@ -46,3 +46,19 @@ INSERT INTO Evento VALUES (
 
 
 select * from evento
+
+CREATE TABLE Equipamento
+(
+  IDEquipamento INT NOT NULL PRIMARY KEY,
+  IDSala INT FOREIGN KEY REFERENCES Sala(IDSala),
+  Nome VARCHAR(50) NOT NULL,
+  Tipo VARCHAR(100) NOT NULL
+)
+go
+
+Insert into Equipamento VALUES
+(
+	(select  ISNULL (MAX (IDEquipamento), 0) FROM Equipamento)+1,
+	2, 'Computador', 'Eletronico'
+)
+select * from Equipamento

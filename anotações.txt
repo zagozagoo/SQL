@@ -2,3 +2,5 @@ select * from Evento
 where Descricao like 'Aula%' -- tudo que começar com 'Aula' vai aparecer
 
 -- Também funciona como where Descricao like '%de%'  -> tudo que tever 'de' no meio vai aparecer
+-------------------------------------------------------------------------------------------------
+

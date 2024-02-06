@@ -4,7 +4,7 @@ S.Nome as "Nome da Sala",
 SUM(DATEDIFF (MINUTE, E.DtHrInicio, E.DtHrFim)) as "Duração em Minutos Totais"
 
 from Evento as E
-	INNER JOIN Sala as S
+INNER JOIN Sala as S
 	on E.IDSala = S.IDSala
-GROUP BY
-	S.Nome
+	
+GROUP BY S.Nome

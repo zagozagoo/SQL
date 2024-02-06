@@ -19,4 +19,4 @@ from Evento as E
 	INNER JOIN EventoPessoa as EP
 	on E.IDEvento = EP.IDEvento
 
-GROUP BY S.Nome, E.Descricao, S.Capacidade
+GROUP BY S.Nome, E.Descricao, S.Capacidade, E.IDEvento

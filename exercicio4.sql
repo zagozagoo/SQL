@@ -5,7 +5,7 @@ select
 	COUNT(EP.IDPessoa) as Participação
 	
 from EventoPessoa as EP
-	RIGHT JOIN Pessoa as P
+	RIGHT JOIN Pessoa as P -- Nesse caso tem que usar RIGHT, pois algumas pessoas não participaram mas precisam estar na tabela
 	on EP.IDPessoa = P.IDPessoa
 
 GROUP BY P.Nome -- nesse caso não tem f[ormula então pode usar P.Nome ao invés de "Nomes"

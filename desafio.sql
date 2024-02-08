@@ -9,12 +9,16 @@ select TOP 1 --vai usar o mais antigo
 	S.Nome as "Nome da Sala",
 	COUNT(EP.IDPessoa) as Participação,
 	Convert(varchar(10), E.DtHrInicio, 103) as "Data de Início",
-	Convert(varchar(5), getdate(),108) as "Horário de Início"
+	Convert(varchar(5), E.DtHrInicio, 108) as "Horário de Início"
 	
 from Evento as E
 	INNER JOIN Sala as S
 	on E.IDSala = S.IDSala
 	INNER JOIN EventoPessoa as EP
 	on E.IDEvento = EP.IDEvento
+
+where E.Descricao like '%Palestra%'
+
+GROUP BY E.Descricao, S.Nome, E.DtHrInicio, E.IDEvento
 
 ORDER BY DtHrInicio

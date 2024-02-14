@@ -1,0 +1,62 @@
+create database Loja
+go
+
+use Loja
+go
+
+create table TABELA_DE_PRODUTOS
+(
+	CODIGO_DO_PRODUTO VarChar(10) primary key NOT NULL DEFAULT Convert(Varchar(10), NewID()), --ele sempre vai ter um id unico, mesmo que alguem nao insira
+	NOME_DO_PRODUTO VarChar(50) NOT NULL,
+	EMBALAGEM Varchar(20) NOT NULL,
+	TAMANHO Varchar(10) NOT NULL,
+	SABOR VarChar(20) NOT NULL,
+	PRECO_DE_LISTA FLOAT NOT NULL
+)
+
+create table TABELA_DE_VENDEDORES
+(
+	MATRICULA VarChar(5) primary key NOT NULL,
+	NOME VarChar(100) NOT NULL,
+	PERCENTUAL_COMISSAO DATE NOT NULL,
+	DATA_ADMISSAO DATE NOT NULL,
+	DE_FERIAS BIT NOT NULL,
+	BAIRRO VarChar(50) NOT NULL
+)
+
+create table TABELA_DE_CLIENTES
+(
+	CPF VarChar(11) primary key,
+	NOME VarChar(100) NOT NULL,
+	ENDERECO_1 Varchar(150) NOT NULL,
+	ENDERECO_2 VarChar(150),
+	BAIRRO VarChar(50) NOT NULL,
+	CIDADE VarChar(50) NOT NULL,
+	ESTADO VarChar(2) NOT NULL,
+	CEP VarChar(8) NOT NULL,
+	DATA_DE_NASCIMENTO DATE,
+	IDADE INT,
+	GENERO VarChar(1),
+	LIMITE_DE_CREDITO FLOAT NOT NULL,
+	VOLUME_DE_COMPRA FLOAT NOT NULL,
+	PRIMEIRA_COMPRA BIT
+)
+
+create table NOTAS_FISCAIS
+(
+	NUMERO INT primary key NOT NULL,
+	CPF VarChar(11) foreign key references TABELA_DE_CLIENTES (CPF), 
+	MATRICULA VarChar(5) foreign key references TABELA_DE_VENDEDORES(MATRICULA),
+	DATA_VENDA DATE,
+	IMPOSTO FLOAT
+)
+
+create table ITENS_NOTAS_FISCAIS
+(
+	NUMERO INT foreign key references NOTAS_FISCAIS (NUMERO),
+	CODIGO_DO_PRODUTO VarChar(10) foreign key references TABELA_DE_PRODUTOS (CODIGO_DO_PRODUTO),
+	QUANTIDADE INT,
+	PRECO FLOAT,
+
+	PRIMARY KEY (NUMERO, CODIGO_DO_PRODUTO) -- declarando PK pros dois dentro dos (), o nome é chave composta
+)

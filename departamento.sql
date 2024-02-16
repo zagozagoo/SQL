@@ -6,6 +6,13 @@ go
 
 create table Departamento
 (
+	IDDEPARTAMENTO Int primary key,
+	NOME VarCHar(255),
+	LOCALDEPARTAMENTO INT
+)
+
+create table Funcionario
+(
 	EDV Int primary key,
 	NOME VarChar(255),
 	LIDER VarChar(255),
@@ -44,3 +51,4 @@ INSERT INTO Grade_Salarial VALUES
 (2, 4001, 9000),
 (3, 9001, 22000),
 (4, 22001, 50000)
+

@@ -69,40 +69,34 @@ INSERT INTO TabelaRio VALUES
 
  GROUP BY TabelaPais.Continente
 
- --5) Mostre o continente no qual o rio mais extenso está localizado. 
--- Utilizar comando de Junção de Tabelas (Join).
--- Aplicar comando de Ordenação de Dados.
--- Aplicar delimitador de retorno da quantidade de linhas;
- SELECT TOP 1
-	TR.Comprimento_KM,
-	TP.Continente,
-	TR.Rio
 
- FROM TabelaPais as TP
-	INNER JOIN TabelaRio as TR
-	on TP.Continente = TR.Comprimento_KM
+ --5) Mostre o continente no qual o rio mais extenso está localizado
+SELECT TOP 1
+    TR.Comprimento_KM,
+    TP.Continente,
+    TR.Rio
 
- ORDER BY TR.Comprimento_KM ASC
+FROM TabelaRio AS TR
+INNER JOIN TabelaPais AS TP
+ON TR.Pais = TP.Pais
+ORDER BY TR.Comprimento_KM DESC
+
 
  --6)Crie uma trigger que seja ativada ao excluir um país.
- -- A trigger deve remover todas as cidades e rios relacionados com o país excluído.
- --- Aplicar comandos de Exclusão.
--- Criar e Utilizar Triggers.
--- Criar e Utilizar Variáveis.
--- Utilizar Queries com a Restrição de Dados (Where).
+ -- A trigger deve remover todas as cidades e rios relacionados com o país excluído
 
- --Create trigger tExcluiPais on TabelaPais
- --instead of delete
- --AS 
- --BEGIN
---	DELETE TabelaCidade
---	WHERE Cidade in
---	(
---		select
---	)
+CREATE TRIGGER fRemoveRelacionados
+ON TabelaPais
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON
+    DECLARE @DeletedPais VARCHAR(35)
+    SELECT @DeletedPais = Pais FROM DELETED
 
--- END
-
+    DELETE FROM TabelaCidade WHERE Pais = @DeletedPais
+    DELETE FROM TabelaRio WHERE Pais = @DeletedPais
+END
 
  --7) Crie uma função chamada SearchPais que receberá como parâmetro uma palavra/letra que será
  -- utilizada como base para pesquisar no banco de dados um país que comece com o parâmetro inserido.
@@ -119,9 +113,8 @@ return
 --Exemplo de uso:
 SELECT * FROM dbo.fSeachPais('C')
 
---8) PIB per capita representa o que cada pessoa do local teria do total de riquezas que são produzidas no país.
--- Sendo assim, o PIB é dividido pelo número de habitantes da área, indicando o que cada pessoa produziu.
--- Crie uma coluna na tabela Pais com o valor do PIB per capita.
+
+--8) Crie uma coluna na tabela Pais com o valor do PIB per capita.
 
 ALTER TABLE TabelaPais ADD PIB float
 
@@ -129,6 +122,15 @@ update TabelaPais SET PIB = PIB_Em_Milhoes / Populacao_Em_Milhoes
 
 select * from TabelaPais
 
--- 9) Liste as Cidades, Países, População e uma coluna chamada “Situação População” NAO TERMINEIIIII
--- com dados como: “Acima da média” e “Abaixo ou igual à média”
--- - Utilizar comandos de Case When, o conceito de Sub Select e comando de Junção de Tabelas (Join).
+
+-- 9) Liste as Cidades, Países, População e uma coluna chamada “Situação População” com dados como: “Acima da média” e “Abaixo ou igual à média”
+SELECT
+    TC.Cidade,
+    TP.Pais,
+    TC.Populacao_Em_Milhoes,
+    CASE
+        WHEN TC.Populacao_Em_Milhoes > (SELECT AVG(Populacao_Em_Milhoes) FROM TabelaCidade) THEN 'Acima da media'
+        ELSE 'Abaixo ou igual a media'
+    END AS Situacao_Populacao
+FROM TabelaCidade AS TC
+INNER JOIN TabelaPais AS TP ON TC.Pais = TP.Pais

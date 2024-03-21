@@ -1,179 +1,91 @@
-create database ZagoTreinando
-go
+create database db_cinema;
+use db_cinema;
 
-use ZagoTreinando
-go
+create table tb_estudio (
+    IDEstudio int not null primary key auto_increment,
+    Nome varchar(45) not null,
+    Proprietario varchar(45) not null,
+    FaturamentoAnoAnterior decimal(10,2) not null,
+    DataFundacao date not null
+) default charset utf8;
 
-create table Departamento
-(
-	IDDEPARTAMENTO Int primary key,
-	NOME VarCHar(255),
-	LOCALDEPARTAMENTO INT
-)
+create table tb_filmes (
+    IDFilme int not null primary key auto_increment,
+    Meses int not null,
+    Nome varchar(45) not null,
+    AnoLancamento year not null,
+    CustoTotal decimal(10,2) not null,
+    IDEstudio int not null,
+    foreign key (IDEstudio) references tb_estudio (IDEstudio)
+) default charset utf8;
 
-create table Funcionario
-(
-	EDV Int primary key,
-	NOME VarChar(255),
-	LIDER VarChar(255),
-	DATACONTRATACAO Date,
-	SALARIO Float,
-	DEPARTAMENTO Int foreign key references Departamento(IDDEPARTAMENTO)
-)
+create table tb_atores (
+    IDAtor int not null primary key auto_increment,
+    Nome varchar(45) not null,
+    Nacionalidade varchar(45) not null,
+    Idade int not null,
+    Sexo char(1) not null
+) default charset utf8;
 
-create table Grade_Salarial
-(
-	GRADE Int primary key,
-	SAL_MIN Int,
-	SAL_MAX Int
-)
+create table tb_papel (
+    IDPapel int not null primary key auto_increment,
+    CacheAtor decimal(10,2) not null,
+    Personagem varchar(45) not null,
+    IDAtor int not null,
+    IDFilme int not null,
+    foreign key (IDAtor) references tb_atores (IDAtor),
+    foreign key (IDFilme) references tb_filmes (IDFilme)
+) default charset utf8;
 
-INSERT INTO Departamento VALUES
-(1, 'REMAN', 104),
-(2, 'ICO', 101),
-(3, 'ETS', 401),
-(4, 'FCM', 303),
-(5, 'INOVE', 303)
+insert into tb_estudio values
+(1, "Estudio Banana", "Sr. Fruta", 327842.93, 2017-03-03),
+(default, "Never Estudio", "Ale Sater", 3274628.28, 2019-12-09),
+(default, "Producoes Mine", "Bruno Bloquinho", 12536.23, 1970-02-03),
+(default, "Studio Ghibli", "Miyazaki", 125634.23, 2009-10-01),
+(default, "Studio Lust", "Lana del Rey", 347328.93, 2015-11-28),
+(default, "Oceano Productions", "Francisco Oceano", 623478.23, 1990-09-07),
+(default, "Studio Scalene", "Matt", 12736.12, 2004-07-03),
+(default, "Think Centre", "Jose Silva", 4248.83, 2018-12-12),
+(default, "Estudio Watee", "Garrafinha Jr", 76345.34, 1998-01-04),
+(default, "Paixao Producoes", "Luiz Antonio", 999999.99, 2023-11-02);
 
-INSERT INTO Funcionario VALUES
-(92890148, 'Edna Carvalho', 'Andrea', '1990-02-24', 19000, 1),
-(92790062, 'João Manfredo', 'Andrea', '2001-09-26', 12500, 1),
-(91004090, 'Débora Junior', 'Andrea', '1999-03-02', 15600, 1),
-(94566222, 'Carla Rodrigues', 'Andrea', '1990-10-04', 20000, 1),
-(96334100, 'Maciel Oliveira', 'Andrea', '1995-12-06', 16500, 1),
-(97885245, 'Guilherme Gonçalves', 'Marcos', '2010-05-13', 9000, 2),
-(92894706, 'Jessica Lima', 'Marcos', '2015-08-14', 25678, 2),
-(98462157, 'Lorena Ray', 'Pietra', '2017-02-25', 1900, 3),
-(91450032, 'Isabella Machado', 'Marcos', '1993-01-22', 10900, 2)
+insert into tb_filmes values
+(1, 7, "Lalaland", 2016, 734895.95, 1),
+(default, 12, "Closure", 2023, 76348.93, 2),
+(default, 5, "Cubos", 1989, 12383.62, 3),
+(default, 2, "KungFu Panda", 2018, 347682.83, 4),
+(default, 4, "Treinando Dragão", 2013, 762348.34, 5),
+(default, 6, "Atividade Paranormal", 2004, 76234.93, 6),
+(default, 9, "Luizinho Aventuras", 2005, 63524.83, 7),
+(default, 3, "Abismo", 2019, 765485.95, 8),
+(default, 1, "Zago Adventures", 1999, 65234.34, 9),
+(default, 4, "Clones", 2023, 643759.84, 10);
 
-INSERT INTO Grade_Salarial VALUES
-(1, 1500, 4000),
-(2, 4001, 9000),
-(3, 9001, 22000),
-(4, 22001, 50000)
+insert into tb_atores values
+(10, 'Emma Stone', "Norte Americano", 23, "F"),
+(default, 'Knalb', "Brasileiro", 18, "M"),
+(default, 'Vitoria Zago', 'Brasileiro', 18, 'F'),
+(default, 'Bandit Healer', "Australiano", 43, "M"),
+(default, 'Osamu Dazai', 'Japones', 24, "M"),
+(default, 'Anya Taylor', 'Britanico', '20', 'F'),
+(default, 'Willow', 'Norte Americano', '22', 'F'),
+(default, 'Bruna Marquezine', 'Brasileiro', '26', 'F'),
+(default, 'Nana Hachi', 'Japones', 23, 'F'),
+(default, 'Donald Glover', 'Canadense', 40, 'M');
 
+insert into tb_papel values
+(100, 1000.00, 'Mia Stone', 10, 1),
+(default,30000.00, 'Panda', 19, 4 ),
+(default,34950.50, 'Dad Healer', 13, 5),
+(default, 201200.70, 'Sebastian', 14, 1 ),
+(default,7000.99, 'Mariana', 18, 8),
+(default, 15000.90, 'Zaguinho Jovem', 12, 9),
+(default,201920.30, 'Blankzinho', 11, 7),
+(default,3200.80, 'Smith',16, 3),
+(default, 17000.00,'Rainha', 15, 6),
+(default, 20000.00, 'Yoko', 17, 10);
 
--- 1. Exiba o nome (departamento) o maior, menor e média salarial de cada departamento
-select
-	D.NOME as Departamento,
-	ROUND (MIN (F.SALARIO), 2) as 'Salário mínimo',-- 2 pra arredondar pra dois numeros apos a vírgula
-	ROUND (MAX (F.SALARIO), 2) as 'Salário máximo',
-	ROUND (AVG (F.SALARIO), 2) as 'Média Salarial'
+###### Exercicios #######
 
-from Departamento as D
-	LEFT JOIN Funcionario as F --left join para mostrar todos os departamentos, ja que eu nao fiz todo o banco e tem departamento com salrio nulo
-	on D.IDDEPARTAMENTO = F.DEPARTAMENTO
-
--- NAO ESQUECE DE FAZER GROUP QUANDO TIVER FUNÇÃO AGREGADOREA, MIN, MAX, AVG
-GROUP BY D.NOME -- só coloca no group by o que não é agregador
-
-
--- 2. crie uma função que irá exibir o nome (setor), a quantidade de funcionários que existem em cada setor com o salário maior que o parâmetro passado
-
-create function fQuantidadeFuncionário (@busca Int)
-Returns table as
-return
-(
-	select
-		D.NOME as Setor,
-		COUNT (F.EDV) as 'Qtd. Funcionários'
-
-	from Departamento as D
-	INNER JOIN Funcionario as F
-	on D.IDDEPARTAMENTO = F.DEPARTAMENTO
-	
-	where F.SALARIO > @busca
-
-	GROUP BY D.NOME
-)
- --Exemplo de uso:
-SELECT * from dbo.fQuantidadeFuncionário(10000)
-
-
--- 3. Verifique o nome, lider, mes/ano de contratação e grade salarial do funcionario mais velho.
--- NÃO usar join ou variáveis (usar subselect, order by, and, or ou not)
-
-select TOP 1
-	F.NOME,
-	F.LIDER,
-	CONVERT(VarChar(7), F.DATACONTRATACAO, 33) as 'Mês/Ano contratação',
-	(
-		SELECT
-			GRADE
-		FROM Grade_Salarial where SAL_MIN <= F.SALARIO and SAL_MAX >= F.SALARIO --seleciona a grade somente os salarios que estao entre o MIN e o MAX
-	) as 'Grade Salarial'
-	
-from Funcionario as F
-	
-ORDER BY F.DATACONTRATACAO ASC
-
--- 4. Para evitar problemas futuros, geralmente os dados não são excluídos de um banco, mas são inativados. Com isso, modifique a tabela de funcionários,
--- adicionando uma nova coluna "Ativo" que possuirá o valor 1 caso seja atual colaborador e 0 para antigo colaborador.
--- faça com que toda vez que tentam usar o DELETE em algum funcionario, ele apenas seja inativado
--- usar trigger, alteração de dados e alteração de estruturas
-
-ALTER table Funcionario ADD Ativo bit
-
-select * from Funcionario
-update Funcionario set Ativo = 1
-
-create trigger tDesativar on Funcionario
-INSTEAD OF delete
-as
-begin
-	UPDATE Funcionario SET Ativo = 0 where EDV in (select EDV from deleted) -- in para ver as pessoas que foram deletadas
-end
-
-delete from Funcionario where EDV = '91004090' -- isso trasformou esse funcionario em ativo 0
-
-
--- 5. exiba o nome de todos os funcionários que começam com a letra "J", mostre também uma segunda coluna "Atual" com o valor de "Ativo" ou "Inativo"
--- de acordo com a coluna criada no exercício 4 . Usar strings e verificação de valores
-select 
-	F.NOME as 'Funcionario',
-
-	CASE
-		WHEN F.Ativo = 0 THEN 'Inativo'
-		ELSE 'Ativo'
-	END as Atual
-
-from Funcionario as F
-	where NOME like 'J%'
-
-
--- 6. A líder Andrea abriu o próprio negócio e levou seus liderados com ele. "Delete" esses funcionários do banco, some o valor dos seus salários e
--- reparta igualmente entre o restante dos funcionários do setor, atualizando a tabela. Usar comandos de exclusão, variáveis e alteração de dados
-
-DECLARE @somaDosSalarios AS INT
-SET @somaDosSalarios =
-(
-	SELECT 
-		SUM (SALARIO)
-	from Funcionario where LIDER = 'Andrea'
-)
-GO
-
-DECLARE @setor AS INT
-SET @setor = 
-(
-	SELECT Distinct(Departamento) From Funcionario where LIDER = 'Andrea' -- distinct pra nao aparecer o 1 (departamento reman) várias vezes, apenas uma
-)
-GO
-
-DELETE from Funcionario where LIDER = 'Andrea'
-GO
-
-DECLARE @numeroDePessoas AS INT
-SET @numeroDePessoas = 
-(
-	SELECT
-		COUNT(EDV)
-	from Funcionario 
-)
-GO
-
-UPDATE Funcionario SET SALARIO = SALARIO + (@somaDosSalarios / @numeroDePessoas) where Departamento = @setor
-GO
-
-select * from Funcionario
-GO
+#Quais são os estúdios cadastrados no banco de dados?
+select * from tb_estudio;
